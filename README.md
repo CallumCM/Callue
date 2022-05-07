@@ -1,6 +1,9 @@
 # Callue - A Preprocessor of Sorts
 Callue is a preprocessor for Bottle.py, designed because I do not need a whole NGINX server for every tiny project I do, so this provides an exceedingly simple way to easily write an HTTP server.
 
+## Installation
+`pip install callue` what else do i put here?
+
 ## Get Started
 ```py
 import callue
