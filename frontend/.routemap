@@ -1,10 +1,4 @@
-# Syntax:
-#/[url] ->
-#  [renders/serves] [filepath]
-#  <where template_param_1 is [{python-code}]
-#  and template_param_2 is [{python-code}]>
-
 / ->
   renders /learn_programming/index.html
-  where placeholder is {'hello'}
+  where placeholder is {}
   and placeholder_2 is {1+1};

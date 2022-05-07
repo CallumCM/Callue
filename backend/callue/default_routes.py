@@ -3,7 +3,7 @@ import bottle
 from .util import minify, to_minify
 from .routemap import overrides_default
 
-def init(app, pages):
+def init(app, pages):  
   if not '/' in overrides_default:
     @app.route('/')
     def homepage():

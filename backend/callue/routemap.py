@@ -9,6 +9,8 @@ TOKENS = {
   'NEW_ROUTE': ';'
 }
 
+routemap_variables = {}
+
 overrides_default = []
 
 class Route:
@@ -31,7 +33,7 @@ def make_route(code):
   code = code.split('->')
   target = code[0].strip()
   code = list(map(lambda x: x, code[1].split(' ')))
-  code = [e for e in code if e]
+  code = [token for token in code if token]
   is_template = {
     'serves': False,
     'renders': True
@@ -44,7 +46,7 @@ def make_route(code):
     for param in raw_template_params:
       param = param.split(' is ')
       if param[1].startswith('{') and param[1].endswith('}'):
-        param[1] = eval(param[1][1:-1])
+        param[1] = eval(param[1][1:-1], routemap_variables)
       template_params[param[0]] = param[1]
     return Route(target, destination, True, template_params)
     
