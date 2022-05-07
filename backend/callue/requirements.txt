@@ -1,0 +1,5 @@
+bottle==0.12.19
+Paste==3.5.0
+rcssmin==1.1.0
+htmlmin==0.1.12
+jsmin==3.0.1
