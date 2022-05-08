@@ -1,3 +1,0 @@
-import callue
-
-callue.run()

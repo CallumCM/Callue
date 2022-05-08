@@ -31,36 +31,53 @@ def split_routes(code):
   return code.split(TOKENS['NEW_ROUTE'])[:-1]
 
 def make_route(code):
+  """
+  Evaluate a .routemap route and return a Route object
+  """
+  
   code = code.split('->')
   target = code[0].strip()
-  code = list(map(lambda x: x, code[1].split(' ')))
+
+  code = code[1].split(' ')
   code = [token for token in code if token]
+  
   is_template = {
-    'serves': False,
-    'renders': True
+    'serve': False,
+    'render': True
   }[code[0]]
-  # We do not want the / at the beginning of the path
-  destination = re.match(TOKENS['REMOVE_LEADING_SLASH'],code).group(0);
+  
+  destination = re.match(TOKENS['REMOVE_LEADING_SLASH'], code).group(0);
+  
   if is_template:
-    raw_template_params = ' '.join(code[3:]).split(' and ')
+    raw_template_params = ' '.join(code[3:]).split(',')
     template_params = {}
+    
     for param in raw_template_params:
-      param = param.split(' is ')
-      if param[1].startswith('{') and param[1].endswith('}'):
-        param[1] = eval(param[1][1:-1], routemap_variables)
-      template_params[param[0]] = param[1]
+      key_value = param.split('=')
+
+      # Embedded Python
+      if key_value[1].startswith('{') and key_value[1].endswith('}'):
+        key_value[1] = eval(key_value[1][1:-1], routemap_variables)
+      template_params[key_value[0]] = key_value[1]
+      
     return Route(target, destination, True, template_params)
     
   return Route(target, destination, False)
 
 def _execute_routemap(app, frontend_dir):
+  """
+  Parse a .routemap file in the `frontend_dir`
+  """
   routemap = Path(os.path.join(frontend_dir, '.routemap')).read_text('utf-8')
+
   routemap = strip_comments(routemap)
   routemap = strip_whitespace(routemap)
   routemap = split_routes(routemap)
+  
   for route in routemap:
     route = make_route(route)
     overrides_default.append(route.target)
+    
     @app.route(route.target)
     def routemap_route():
       if route.is_template:
