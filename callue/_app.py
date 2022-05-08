@@ -31,4 +31,4 @@ def run(port=80, quiet=True):
   Launch the HTTP server in a blocking function.
   """
 
-  _app.run(host='0.0.0.0', port=port, server='paste', quiet=True)
+  _app.run(host='0.0.0.0', port=port, server='paste', quiet=quiet)
