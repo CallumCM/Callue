@@ -17,8 +17,6 @@ def init(app, pages):
   if not '/<filepath:path>' in overrides_default:
     @app.route('/<filepath:path>')
     def return_static(filepath):
-      filepath = os.path.join(pages['frontend'], filepath)
-      
       if os.path.isdir(filepath):
         try:
           return bottle.static_file(filepath, root=pages['frontend'])
