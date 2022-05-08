@@ -40,3 +40,4 @@ Syntax:
 - Define template parameters with `where [param1] is [value] and [param2] is [value2]` etc.
 - Before calling `setup()`, if you add values to the `callue.routemap` dictionary, they will be accessible in `.routemap`. This is how you would communicate between your backend and `.routemap`
 - Code encapsulated in `{...}` will be evaluated as Python
+- If the embedded python returns `False`, the request will be aborted with `401 Cancelled`

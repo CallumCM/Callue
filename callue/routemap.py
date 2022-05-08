@@ -58,6 +58,11 @@ def make_route(code):
       # Embedded Python
       if key_value[1].startswith('{') and key_value[1].endswith('}'):
         key_value[1] = eval(key_value[1][1:-1], routemap_variables)
+
+        # So that the user can 'cancel' the request from within .routemap
+        if key_value[1] == False:
+          bottle.abort(401, 'Cancelled')
+      
       template_params[key_value[0]] = key_value[1]
       
     return Route(target, destination, True, template_params)
