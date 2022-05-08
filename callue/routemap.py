@@ -6,6 +6,7 @@ from pathlib import Path
 TOKENS = {
   'COMMENT': re.compile('#(.*?)$', re.MULTILINE),
   'DUPLICATE_WHITESPACE': re.compile('\s{2,}', re.MULTILINE),
+  'REMOVE_LEADING_SLASH': re.compile('^/?(.*)$'),
   'NEW_ROUTE': ';'
 }
 
@@ -39,7 +40,7 @@ def make_route(code):
     'renders': True
   }[code[0]]
   # We do not want the / at the beginning of the path
-  destination = code[1][1:]
+  destination = re.match(TOKENS['REMOVE_LEADING_SLASH'],code).group(0);
   if is_template:
     raw_template_params = ' '.join(code[3:]).split(' and ')
     template_params = {}
